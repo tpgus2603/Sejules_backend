@@ -42,11 +42,10 @@ public class ProfileControllerTest {
     private WebApplicationContext context;
     @Autowired
     private MockMvc mockMvc;
-
-    @MockBean
+    @Autowired
     private UserService userService;
 
-    @MockBean
+    @Autowired
     private UserRepository userRepository; // LoginArgumentResolver에서 사용됨
 
     @Autowired
@@ -66,16 +65,10 @@ public class ProfileControllerTest {
                 .gender(null)
                 .userCategories(Set.of())
                 .build();
-        // UserRepository 모킹
-        when(userRepository.findById(1L)).thenReturn(java.util.Optional.of(mockUser));
 
         // 세션 설정
         mockSession = new MockHttpSession();
         mockSession.setAttribute("userId", 1L);
-        mockMvc = MockMvcBuilders
-                .webAppContextSetup(context)
-                .apply(SecurityMockMvcConfigurers.springSecurity()) // Spring Security 적용
-                .build();
     }
 
     @Test
