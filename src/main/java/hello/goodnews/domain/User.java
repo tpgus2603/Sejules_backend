@@ -1,31 +1,57 @@
 package hello.goodnews.domain;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
-@Table(name="users")
 @Entity
+@Table(name = "users")
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="user_id")
     private Long id;
 
-    private String email;
-
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Scrap> scraps = new ArrayList<>();
+    @Column(nullable = false, unique = true)
+    private String email;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<UserCategory> userCategories = new ArrayList<>();
+    // Gender 필드를 Enum 타입으로 변경
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Gender gender;
+
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime created_at = LocalDateTime.now();
+
+    // 사용자 스크랩 (일대다 관계)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private Set<Scrap> scraps = new HashSet<>();
+
+    // 사용자 카테고리 선택 (일대다 관계)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private Set<UserCategory> userCategories = new HashSet<>();
+
+    @Builder
+    User(Long id, String name,String email,Gender gender,Set<UserCategory> userCategories)
+    {
+        this.id=id;
+        this.name=name;
+        this.email=email;
+        this.gender=gender;
+        this.userCategories=userCategories;
+    }
+
 }

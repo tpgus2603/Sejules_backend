@@ -1,6 +1,5 @@
 package hello.goodnews.service;
 
-import hello.goodnews.domain.Role;
 import hello.goodnews.domain.User;
 import hello.goodnews.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
@@ -37,7 +36,7 @@ public class LoginService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         String name = oAuth2User.getAttribute("name");
 
         if (email == null ) {
-            throw new OAuth2AuthenticationException("Invalid email domain. Only ajou.ac.kr emails are allowed.");
+            throw new OAuth2AuthenticationException("no email error");
         }
 
         // DB에서 사용자 조회 또는 생성
@@ -53,7 +52,6 @@ public class LoginService implements OAuth2UserService<OAuth2UserRequest, OAuth2
             user = User.builder()
                     .name(name)
                     .email(email)
-                    .role(Role.GUEST) // 기본 역할 설정
                     .build();
             userRepository.save(user);
             log.info("New user created: {}", email);
@@ -63,11 +61,10 @@ public class LoginService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         httpSession.setAttribute("userId", user.getId());
 
         // DefaultOAuth2User 반환
+        // "name" 속성을 username으로 사용
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_" + user.getRole().name())),
-                oAuth2User.getAttributes(),
-                "name" // "name" 속성을 username으로 사용
-        );
+                Collections.singleton(new SimpleGrantedAuthority("Role_user")// "name" 속성을 username으로 사용
+        ), oAuth2User.getAttributes(), "name");
     }
 
 }
