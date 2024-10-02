@@ -74,7 +74,7 @@ public class ProfileControllerTestV2 {
 
         // 세션 설정
         mockSession = new MockHttpSession();
-        mockSession.setAttribute("user", mockUser.getId());
+        mockSession.setAttribute("userId", mockUser.getId());
     }
 
     @Test

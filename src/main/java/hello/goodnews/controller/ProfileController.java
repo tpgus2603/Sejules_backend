@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/profile")
 @RequiredArgsConstructor
 @Slf4j
-public class ProfileController {
+public class ProfileController { //세션에 있는 사용자에 대해 카테고리 정보랑 성별 입력시켜줌
 
     private final UserService userService;
 

@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -35,7 +36,7 @@ public class News {
     private LocalDateTime published_date;
 
     @Column
-    private String source;
+    private List<String> keyward;
 
     // CategoryType Enum을 사용하여 카테고리 지정
     @Enumerated(EnumType.STRING)
