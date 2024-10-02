@@ -26,13 +26,6 @@ public class SearchService {
      * @return 페이징된 뉴스 DTO 리스트
      */
     public NewsPageResponse searchNews(String searchQuery, int page) {
-        if (searchQuery == null || searchQuery.trim().isEmpty()) {
-            return new NewsPageResponse(List.of());
-        }
-
-        if (searchQuery.length() > 100) { // 검색어 길이 제한
-            throw new IllegalArgumentException("검색어는 100자 이내로 입력해주세요.");
-        }
 
         // 화이트 스페이스를 기준으로 검색어 분리
         List<String> tokens = Arrays.asList(searchQuery.trim().split("\\s+"));

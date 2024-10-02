@@ -5,6 +5,7 @@ package hello.goodnews.controller;
 import hello.goodnews.dto.NewsPageResponse;
 import hello.goodnews.service.SearchService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,8 @@ public class SearchController {
     @GetMapping("/page/{page}")
     public ResponseEntity<NewsPageResponse> search(
             @PathVariable("page") int page,
-            @RequestParam("query") @Valid @Size(max = 100, message = "검색어는 100자 이내로 입력해주세요.") String searchQuery) {
+            @RequestParam("query") @Valid @Size(max = 100, message = "검색어는 100자 이내로 입력해주세요.")
+            @NotBlank(message = "검색어는 비어 있을 수 없습니다.") String searchQuery) {
         NewsPageResponse response = searchService.searchNews(
                 searchQuery,
                 page
