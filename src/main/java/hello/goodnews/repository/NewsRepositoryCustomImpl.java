@@ -48,11 +48,13 @@ public class NewsRepositoryCustomImpl implements NewsRepositoryCustom {
         List<NewsDto> content = queryFactory
                 .select(Projections.constructor(NewsDto.class,
                         news.title,    // NewsDto의 title 필드에 매핑
-                        news.content,  // NewsDto의 content 필드에 매핑
+                        news.id,
+                        news.content,// NewsDto의 content 필드에 매핑
+                        news.published_date,
                         news.url))     // NewsDto의 url 필드에 매핑
                 .from(news)
                 .where(builder)                        // 동적 조건 적용
-                .orderBy(news.created_at.desc())        // 생성일 기준 내림차순 정렬
+                .orderBy(news.published_date.desc())        // 등재일 기준 내림차순 정렬
                 .offset(pageable.getOffset())          // 페이징 시작 위치
                 .limit(pageable.getPageSize())         // 페이지 크기 제한
                 .fetch();                              // 쿼리 실행 및 결과 가져오기

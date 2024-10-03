@@ -56,6 +56,7 @@ public class SearchControllerTest {
         news1.setUrl("http://example.com/1");
         news1.setPublished_date(LocalDateTime.now().minusDays(1));
         news1.setCategoryType(CategoryType.TECH);
+        news1.setShortcut("SBU");
         news1.setCreated_at(LocalDateTime.now().minusDays(1));
 
         News news2 = new News();
@@ -64,7 +65,8 @@ public class SearchControllerTest {
         news2.setUrl("http://example.com/2");
         news2.setPublished_date(LocalDateTime.now().minusDays(2));
         news2.setCategoryType(CategoryType.TECH);
-        news2.setCreated_at(LocalDateTime.now().minusDays(2));
+        news2.setShortcut("COSDJ");
+
 
         newsRepository.saveAll(List.of(news1, news2));
     }

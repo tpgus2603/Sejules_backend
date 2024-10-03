@@ -30,6 +30,9 @@ public class News {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private String shortcut;
+
     @Column(nullable = false, unique = true)
     private String url;
 
@@ -41,9 +44,6 @@ public class News {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CategoryType categoryType;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime created_at = LocalDateTime.now();
 
     // 뉴스 스크랩 (일대다 관계)
     @OneToMany(mappedBy = "news", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
