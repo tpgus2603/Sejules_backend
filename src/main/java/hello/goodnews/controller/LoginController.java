@@ -11,13 +11,11 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
-@RestController
+@Controller
 @RequestMapping("/api/login")
 @RequiredArgsConstructor
 @Slf4j
@@ -26,10 +24,19 @@ public class LoginController {
     private final UserService userService;
 
     /**
+     * /api/login 엔드포인트 접근 시 Google OAuth 인증 페이지로 리다이렉트
+     */
+    @GetMapping
+    public String login() {
+        return "redirect:/oauth2/authorization/google";
+    }
+
+    /**
      * 로그인 성공 시 호출되는 엔드포인트
      * @param loginUser 현재 로그인된 사용자
      * @return 프로필 완성 여부에 따른 응답
      */
+    @ResponseBody
     @GetMapping("/success")
     public ResponseEntity<?> loginSuccess(@LoginUser User loginUser) {
         log.info("loginuser={}", loginUser.getName());
