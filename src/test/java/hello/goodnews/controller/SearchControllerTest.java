@@ -57,7 +57,6 @@ public class SearchControllerTest {
         news1.setPublished_date(LocalDateTime.now().minusDays(1));
         news1.setCategoryType(CategoryType.TECH);
         news1.setShortcut("SBU");
-        news1.setCreated_at(LocalDateTime.now().minusDays(1));
 
         News news2 = new News();
         news2.setTitle("Spring Data JPA");
