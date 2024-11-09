@@ -5,6 +5,10 @@ import hello.goodnews.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -17,12 +21,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final HttpSession httpSession;
     private final UserRepository userRepository;
 
     @Override
-    public boolean supportsParameter(MethodParameter parameter) { //user클래스에 대해서 적용
-        // 파라미터에 @LoginUser 어노테이션이 있는지 확인
+    public boolean supportsParameter(MethodParameter parameter) {
+        // @LoginUser 어노테이션이 있는 User 타입의 파라미터에 적용
         return parameter.getParameterAnnotation(LoginUser.class) != null
                 && parameter.getParameterType().equals(User.class);
     }
@@ -32,13 +35,27 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
                                   ModelAndViewContainer mavContainer,
                                   NativeWebRequest webRequest,
                                   WebDataBinderFactory binderFactory) throws Exception {
-        // 세션에서 SessionUser 가져오기
-        Long Id= (Long)httpSession.getAttribute("userId");
-        if (Id == null) {
-            throw new RuntimeException("세션에 없는 사용자");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated()) {
+            throw new RuntimeException("인증되지 않은 사용자");
         }
-        // ID를 통해 User 엔티티 조회
-        Optional<User> userOptional = userRepository.findById(Id);
-        return userOptional.orElse(null);
+
+        Object principal = authentication.getPrincipal();
+        String email;
+
+        if (principal instanceof OAuth2User) {
+            OAuth2User oAuth2User = (OAuth2User) principal;
+            email = oAuth2User.getAttribute("email");
+        } else if (principal instanceof UserDetails) {
+            UserDetails userDetails =
+                    (UserDetails) principal;
+            email = userDetails.getUsername(); // 보통 username은 email로 설정됨
+        } else {
+            throw new RuntimeException("지원하지 않는 사용자 타입");
+        }
+
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        return userOptional.orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
     }
 }

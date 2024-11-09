@@ -25,4 +25,6 @@ public interface ScrapRepository extends JpaRepository<Scrap, Long> {
 
     @Query("SELECT s FROM Scrap s WHERE s.user = :user AND s.news.categoryType = :categoryType")
     List<Scrap> findByCategory(@Param("user") User user, @Param("categoryType") CategoryType categoryType);
+
+
 }

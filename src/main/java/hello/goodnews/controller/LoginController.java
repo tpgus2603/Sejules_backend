@@ -36,6 +36,8 @@ public class LoginController {
      * @param loginUser 현재 로그인된 사용자
      * @return 프로필 완성 여부에 따른 응답
      */
+
+    // 서버에서
     @ResponseBody
     @GetMapping("/success")
     public ResponseEntity<?> loginSuccess(@LoginUser User loginUser) {

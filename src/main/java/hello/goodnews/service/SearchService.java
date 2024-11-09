@@ -30,8 +30,8 @@ public class SearchService {
         // 화이트 스페이스를 기준으로 검색어 분리
         List<String> tokens = Arrays.asList(searchQuery.trim().split("\\s+"));
 
-        // Pageable 설정 (페이지 크기 고정: 20)
-        PageRequest pageable = PageRequest.of(page, 20);
+        // Pageable 설정 (페이지 크기 고정: 10)
+        PageRequest pageable = PageRequest.of(page, 10);
 
         // 검색 수행
         List<NewsDto> newsList = newsRepository.searchNewsByTitleTokens(tokens, pageable).getContent();

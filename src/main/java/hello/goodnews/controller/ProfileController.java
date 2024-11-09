@@ -31,7 +31,7 @@ public class ProfileController { //세션에 있는 사용자에 대해 카테�
      * @param user 현재 로그인된 사용자
      * @return 성공 또는 오류 메시지
      */
-    @PostMapping("/complete")
+    @PostMapping("/new")
     public ResponseEntity<?> completeUserProfile(
             @Valid @RequestBody UserProfileDTO userProfileDTO,
             BindingResult bindingResult,

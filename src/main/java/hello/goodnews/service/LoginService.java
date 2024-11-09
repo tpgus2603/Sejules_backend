@@ -24,8 +24,8 @@ import java.util.Optional;
 public class LoginService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
 
     private final UserRepository userRepository;
-    private final HttpSession httpSession;
 
+    @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         // DefaultOAuth2UserService를 사용하여 사용자 정보 로드
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
@@ -57,14 +57,10 @@ public class LoginService implements OAuth2UserService<OAuth2UserRequest, OAuth2
             log.info("New user created: {}", email);
         }
 
-        // 세션서장
-        httpSession.setAttribute("userId", user.getId());
-
-        // DefaultOAuth2User 반환
-        // "name" 속성을 username으로 사용
+        // SecurityContext에 사용자 정보를 저장
         return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority("Role_user")// "name" 속성을 username으로 사용
-        ), oAuth2User.getAttributes(), "name");
+                Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")), // "ROLE_USER" 형식 권장
+                oAuth2User.getAttributes(),
+                "name");
     }
-
 }

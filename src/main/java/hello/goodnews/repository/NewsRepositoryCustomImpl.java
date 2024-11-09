@@ -3,6 +3,7 @@ package hello.goodnews.repository;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import hello.goodnews.domain.CategoryType;
 import hello.goodnews.domain.QNews;
 import hello.goodnews.dto.NewsDto;
 import jakarta.persistence.EntityManager;

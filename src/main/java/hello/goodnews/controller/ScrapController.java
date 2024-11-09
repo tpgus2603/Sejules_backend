@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api-scraps")
+@RequestMapping("/api/scraps")
 @RequiredArgsConstructor
 public class ScrapController {
 

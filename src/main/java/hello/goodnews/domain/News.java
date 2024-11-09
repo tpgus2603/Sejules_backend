@@ -38,12 +38,19 @@ public class News {
 
     @Column(nullable = false)
     private LocalDateTime published_date;
+    @Column(nullable = false)
+    private String Keyword1;
+    @Column(nullable = false)
+    private String Keyword2;
+    @Column(nullable = false)
+    private String Keyword3;
 
 
     // CategoryType Enum을 사용하여 카테고리 지정
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CategoryType categoryType;
+
 
     // 뉴스 스크랩 (일대다 관계)
     @OneToMany(mappedBy = "news", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
