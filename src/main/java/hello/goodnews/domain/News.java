@@ -39,11 +39,19 @@ public class News {
     @Column(nullable = false)
     private LocalDateTime published_date;
     @Column(nullable = false)
-    private String Keyword1;
+    private String keyword1;
+
     @Column(nullable = false)
-    private String Keyword2;
+    private String keyword2;
     @Column(nullable = false)
-    private String Keyword3;
+    private String keyword3;
+
+    @Column(nullable = false)
+    private String keyword1Detail;
+    @Column(nullable = false)
+    private String keyword2Detail;
+    @Column(nullable = false)
+    private String keyword3Detail;
 
 
     // CategoryType Enum을 사용하여 카테고리 지정

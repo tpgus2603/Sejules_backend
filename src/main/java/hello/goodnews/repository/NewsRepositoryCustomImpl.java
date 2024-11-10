@@ -50,9 +50,16 @@ public class NewsRepositoryCustomImpl implements NewsRepositoryCustom {
                 .select(Projections.constructor(NewsDto.class,
                         news.title,    // NewsDto의 title 필드에 매핑
                         news.id,
-                        news.content,// NewsDto의 content 필드에 매핑
+                        news.shortcut,// NewsDto의 content 필드에 매핑
                         news.published_date,
-                        news.url))     // NewsDto의 url 필드에 매핑
+                        news.url,
+                        news.keyword1,
+                        news.keyword1Detail,
+                        news.keyword2,
+                        news.keyword2Detail,
+                        news.keyword3,
+                        news.keyword3Detail
+                        ))     // NewsDto의 url 필드에 매핑
                 .from(news)
                 .where(builder)                        // 동적 조건 적용
                 .orderBy(news.published_date.desc())        // 등재일 기준 내림차순 정렬
