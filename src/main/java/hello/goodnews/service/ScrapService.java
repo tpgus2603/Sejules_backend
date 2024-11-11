@@ -63,7 +63,6 @@ public class ScrapService {
                 .map(s -> new NewsDto(
                         s.getNews().getId(),
                         s.getNews().getTitle(),
-                        s.getNews().getShortcut(),
                         s.getNews().getKeyword1(),
                         s.getNews().getKeyword2(),
                         s.getNews().getKeyword3(),
