@@ -32,6 +32,12 @@ public class News {
 
     @Column(nullable = false)
     private String shortcut;
+    @Column(nullable = false)
+    private String shortcut1;
+    @Column(nullable = false)
+    private String shortcut2;
+    @Column(nullable = false)
+    private String shortcut3;
 
     @Column(nullable = false, unique = true)
     private String url;

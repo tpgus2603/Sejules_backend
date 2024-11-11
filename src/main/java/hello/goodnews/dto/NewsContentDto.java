@@ -12,7 +12,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class NewsContentDto {
     private String title;
+    private String shortcut;
     private String content;
+    private String shortcut1;
+    private String shortcut2;
+    private String shortcut3;
     private LocalDateTime published_date;
 
 }

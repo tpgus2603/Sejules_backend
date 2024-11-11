@@ -22,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class CategoryController {
 
     private final CategoryService categoryService;
-
-
     @GetMapping("/{page}")
     public ResponseEntity<NewsPageResponse> searchCategory(@PathVariable("page") int page,
             @NotBlank(message = "카테고리 타입을 입력하세요") @RequestParam("category") CategoryType categoryType)
