@@ -35,7 +35,7 @@ public class SearchController {
      * @param searchQuery  검색어 (쿼리 파라미터)
      * @return 검색된 News 리스트와 페이징 정보
      */
-    @GetMapping("/page/{page}")
+    @GetMapping("/{page}")
     public ResponseEntity<NewsPageResponse> search(
             @PathVariable("page") int page,
             @RequestParam("query") @Valid @Size(max = 100, message = "검색어는 100자 이내로 입력해주세요.")
