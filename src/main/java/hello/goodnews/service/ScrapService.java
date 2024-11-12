@@ -59,18 +59,20 @@ public class ScrapService {
         }
 
         // 불필요한 필드를 제거하고 NewsDto로 변환
+        // Builder 패턴을 사용하여 NewsDto로 변환
         return scraps.stream()
-                .map(s -> new NewsDto(
-                        s.getNews().getId(),
-                        s.getNews().getTitle(),
-                        s.getNews().getKeyword1(),
-                        s.getNews().getKeyword2(),
-                        s.getNews().getKeyword3(),
-                        s.getNews().getKeyword1Detail(),
-                        s.getNews().getKeyword2Detail(),
-                        s.getNews().getKeyword3Detail(),
-                        s.getNews().getPublished_date()
-                ))
+                .map(s -> NewsDto.builder()
+                        .id(s.getNews().getId())
+                        .title(s.getNews().getTitle())
+                        .keyword1(s.getNews().getKeyword1())
+                        .keyword2(s.getNews().getKeyword2())
+                        .keyword3(s.getNews().getKeyword3())
+                        .shortcut1(s.getNews().getShortcut1())
+                        .shortcut2(s.getNews().getShortcut2())
+                        .shortcut3(s.getNews().getShortcut3())
+                        .published_date(s.getNews().getPublished_date())
+                        .build()
+                )
                 .collect(Collectors.toList());
     }
 }

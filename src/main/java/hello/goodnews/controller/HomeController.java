@@ -4,8 +4,10 @@ import hello.goodnews.auth.LoginUser;
 import hello.goodnews.domain.CategoryType;
 import hello.goodnews.domain.User;
 import hello.goodnews.domain.UserCategory;
+import hello.goodnews.dto.NewsContentDto;
 import hello.goodnews.dto.NewsPageResponse;
 import hello.goodnews.service.CategoryService;
+import hello.goodnews.service.NewsService;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 public class HomeController {
 
     private final CategoryService categoryService;
+    private final NewsService newsService;
     @GetMapping
     public Set<CategoryType> home(@LoginUser User user) {
         // User의 UserCategory들에서 categoryType만 추출하여 Set으로 변환
@@ -35,13 +38,19 @@ public class HomeController {
     public ResponseEntity<NewsPageResponse> searchCategory(@PathVariable("page") int page,
                                                            @NotBlank @RequestParam("category") CategoryType categoryType,
                                                            @LoginUser User user) {
-        Set<UserCategory> userCategories = user.getUserCategories();
-        if (!userCategories.contains(categoryType)) {
+        Set<CategoryType> collect = user.getUserCategories().stream().map(UserCategory::getCategoryType)
+                .collect(Collectors.toSet());
+        if (!collect.contains(categoryType)) {
             throw new RuntimeException("유저가 선택하지 않은 카테고리");
         }
 
         NewsPageResponse newsPageResponse = categoryService.categorySearch(categoryType, page);
         return ResponseEntity.ok(newsPageResponse);
+    }
+    @GetMapping("/content/{newsId}")
+    public ResponseEntity<NewsContentDto>searchContent(@PathVariable("newsId")Long newsId)
+    {
+        return ResponseEntity.ok(newsService.getNewsContent(newsId));
     }
 
     // @ExceptionHandler를 사용하여 RuntimeException 처리

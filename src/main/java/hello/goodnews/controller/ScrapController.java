@@ -40,4 +40,5 @@ public class ScrapController {
         List<NewsDto> scrappedNews = scrapService.getScrappedNews(user, categoryType);
         return ResponseEntity.ok(scrappedNews);
     }
+
 }

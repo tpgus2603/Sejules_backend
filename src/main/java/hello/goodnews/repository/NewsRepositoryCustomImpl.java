@@ -48,18 +48,15 @@ public class NewsRepositoryCustomImpl implements NewsRepositoryCustom {
         // QueryDSL을 사용하여 뉴스 목록 조회
         List<NewsDto> content = queryFactory
                 .select(Projections.constructor(NewsDto.class,
-                        news.title,    // NewsDto의 title 필드에 매핑
-                        news.id,
-                        news.shortcut,// NewsDto의 content 필드에 매핑
-                        news.published_date,
-                        news.url,
+                        news.id,    // NewsDto의 title 필드에 매핑
+                        news.title,
                         news.keyword1,
-                        news.keyword1Detail,
                         news.keyword2,
-                        news.keyword2Detail,
                         news.keyword3,
-                        news.keyword3Detail
-                        ))     // NewsDto의 url 필드에 매핑
+                        news.shortcut1,
+                        news.shortcut2,
+                        news.shortcut3
+                        ))    // NewsDto의 url 필드에 매핑
                 .from(news)
                 .where(builder)                        // 동적 조건 적용
                 .orderBy(news.published_date.desc())        // 등재일 기준 내림차순 정렬
