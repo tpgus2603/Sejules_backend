@@ -28,10 +28,9 @@ public class User {
 
     // Gender 필드를 Enum 타입으로 변경
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column
     private Gender gender;
-
-    @Column(nullable = false, updatable = false)
+    @Column
     private LocalDateTime created_at = LocalDateTime.now();
 
     // 사용자 스크랩 (일대다 관계)

@@ -12,7 +12,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @RequiredArgsConstructor
 @EnableWebSecurity
-@Profile("!test") // 'test' 프로파일이 아닐 때만 활성화
+//@Profile("!test") // 'test' 프로파일이 아닐 때만 활성화
 public class SecurityConfig {
 
     private final LoginService loginService; // LoginService를 OAuth2UserService로 사용
@@ -26,7 +26,7 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
                 // 요청에 대한 권한 설정
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "index.html", "/css/**", "/images/**", "/js/**", "/h2-console/**", "/api/login").permitAll() // 공개 경로
+                        .requestMatchers("/", "index.html", "/css/**", "/images/**", "/js/**","/oauth2/**", "/h2-console/**", "/api/login","/home").permitAll() // 공개 경로
                         .anyRequest().authenticated() // 나머지 요청은 인증 필요
                 )
                 // 로그아웃 설정

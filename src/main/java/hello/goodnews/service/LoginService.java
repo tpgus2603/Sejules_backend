@@ -31,6 +31,7 @@ public class LoginService implements OAuth2UserService<OAuth2UserRequest, OAuth2
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
+        log.info("서비스시작");
         // 사용자 정보 추출
         String email = oAuth2User.getAttribute("email");
         String name = oAuth2User.getAttribute("name");
@@ -49,6 +50,7 @@ public class LoginService implements OAuth2UserService<OAuth2UserRequest, OAuth2
             userRepository.save(user);
             log.info("Existing user updated: {}", email);
         } else {
+            log.info("username={}",name);
             user = User.builder()
                     .name(name)
                     .email(email)
