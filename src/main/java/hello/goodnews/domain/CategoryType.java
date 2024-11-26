@@ -1,5 +1,6 @@
 package hello.goodnews.domain;
 
+
 public enum CategoryType {
     POLITICS,
     ECONOMY,
