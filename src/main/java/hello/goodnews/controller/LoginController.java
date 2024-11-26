@@ -46,14 +46,14 @@ public class LoginController {
         // 프로필 정보가 완성되지 않은 경우
         if (!userService.isUserProfileComplete(loginUser)) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ProfileStatusResponse(false, null));
+                    .body(new ProfileStatusResponse(false));
         }
 
         // 프로필 정보가 완성된 경우 JWT 토큰 생성
         String token = jwtUtil.generateJwtToken(loginUser.getEmail());
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ProfileStatusResponse(true, token));
+                .body(new ProfileStatusResponse(true));
     }
 
     /**
@@ -63,6 +63,5 @@ public class LoginController {
     @AllArgsConstructor
     static class ProfileStatusResponse {
         private boolean isProfileComplete;
-        private String token; // JWT 토큰 필드 추가
     }
 }
