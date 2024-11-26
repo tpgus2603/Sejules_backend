@@ -2,12 +2,11 @@ package hello.goodnews.auth;
 
 import hello.goodnews.domain.User;
 import hello.goodnews.repository.UserRepository;
-import jakarta.servlet.http.HttpSession;
+import hello.goodnews.service.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -37,7 +36,7 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
                                   WebDataBinderFactory binderFactory) throws Exception {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (authentication == null || !authentication.isAuthenticated()) {
+        if (authentication == null || !authentication.isAuthenticated() || authentication.getPrincipal().equals("anonymousUser")) {
             throw new RuntimeException("인증되지 않은 사용자");
         }
 
@@ -47,10 +46,9 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
         if (principal instanceof OAuth2User) {
             OAuth2User oAuth2User = (OAuth2User) principal;
             email = oAuth2User.getAttribute("email");
-        } else if (principal instanceof UserDetails) {
-            UserDetails userDetails =
-                    (UserDetails) principal;
-            email = userDetails.getUsername(); // 보통 username은 email로 설정됨
+        } else if (principal instanceof UserDetailsImpl) {
+            UserDetailsImpl userDetails = (UserDetailsImpl) principal;
+            email = userDetails.getUsername(); // email로 설정됨
         } else {
             throw new RuntimeException("지원하지 않는 사용자 타입");
         }

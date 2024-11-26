@@ -3,6 +3,7 @@ package hello.goodnews.controller;
 import hello.goodnews.auth.LoginUser;
 import hello.goodnews.domain.User;
 import hello.goodnews.service.UserService;
+import hello.goodnews.util.JwtUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import java.net.URI;
 public class LoginController {
 
     private final UserService userService;
+    private final JwtUtil jwtUtil; // JwtUtil 주입
 
     /**
      * /api/login 엔드포인트 접근 시 Google OAuth 인증 페이지로 리다이렉트
@@ -34,30 +36,33 @@ public class LoginController {
     /**
      * 로그인 성공 시 호출되는 엔드포인트
      * @param loginUser 현재 로그인된 사용자
-     * @return 프로필 완성 여부에 따른 응답
+     * @return 프로필 완성 여부 및 JWT 토큰
      */
-
-    // 서버에서
     @ResponseBody
     @GetMapping("/success")
     public ResponseEntity<?> loginSuccess(@LoginUser User loginUser) {
-        log.info("loginuser={}", loginUser.getName());
+        log.info("loginUser = {}", loginUser.getName());
 
+        // 프로필 정보가 완성되지 않은 경우
         if (!userService.isUserProfileComplete(loginUser)) {
-            // 프로필 정보가 완성되지 않은 경우
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ProfileStatusResponse(false));
+                    .body(new ProfileStatusResponse(false, null));
         }
 
-        // 프로필 정보가 완성된 경우
+        // 프로필 정보가 완성된 경우 JWT 토큰 생성
+        String token = jwtUtil.generateJwtToken(loginUser.getEmail());
+
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ProfileStatusResponse(true));
+                .body(new ProfileStatusResponse(true, token));
     }
 
-    // 응답용 DTO 클래스
+    /**
+     * 응답용 DTO 클래스
+     */
     @Data
     @AllArgsConstructor
     static class ProfileStatusResponse {
         private boolean isProfileComplete;
+        private String token; // JWT 토큰 필드 추가
     }
 }
