@@ -53,3 +53,6 @@ tasks.named('test') {
     useJUnitPlatform()
     jvmArgs += ["-Xshare:off"] // CDS 비활성화
 }
+jar{
+    enabled=false
+}
