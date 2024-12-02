@@ -37,6 +37,16 @@ public class ProfileController { //세션에 있는 사용자에 대해 카테�
             BindingResult bindingResult,
             @LoginUser User user) {
 
+        log.info("User details: {}", user);
+        log.info("User email: {}", user.getEmail());
+        try {
+            // 실제 업데이트 로직
+        } catch (Exception e) {
+            log.error("Error occurred while updating user profile", e);
+            throw e; // 예외를 다시 던져 컨트롤러에서 처리
+        }
+
+
         if (bindingResult.hasErrors()) {
             return ResponseEntity.badRequest().body(new ErrorResponse("입력값 오류", bindingResult.getAllErrors()));
         }

@@ -22,12 +22,24 @@ public class CategoryService {
 
     private final NewsRepository newsRepository;
 
-    public NewsPageResponse categorySearch(CategoryType categoryType, int page) //카테고리 타입 입력
-    {
-        // Pageable 설정 (페이지 크기 고정: 20)
+    public NewsPageResponse categorySearch(CategoryType categoryType, int page) {
         PageRequest pageable = PageRequest.of(page, 10);
-        List<NewsDto> newsDtoList= newsRepository.findByCategoryType(categoryType,pageable).getContent();
+        List<News> newsList = newsRepository.findByCategoryType(categoryType, pageable).getContent();
+        // News -> NewsDto 매핑
+        List<NewsDto> newsDtoList = newsList.stream()
+                .map(news -> NewsDto.builder()
+                        .id(news.getId())
+                        .title(news.getTitle())
+                        .keyword1(news.getKeyword1())
+                        .keyword2(news.getKeyword2())
+                        .keyword3(news.getKeyword3())
+                        .shortcut1(news.getShortcut1())
+                        .shortcut2(news.getShortcut2())
+                        .shortcut3(news.getShortcut3())
+                        .published_date(news.getPublished_date())
+                        .build())
+                .toList();
+        log.info("e!");
         return new NewsPageResponse(newsDtoList);
     }
-
 }
