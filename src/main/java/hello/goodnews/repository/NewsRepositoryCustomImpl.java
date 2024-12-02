@@ -55,7 +55,8 @@ public class NewsRepositoryCustomImpl implements NewsRepositoryCustom {
                         news.keyword3,
                         news.shortcut1,
                         news.shortcut2,
-                        news.shortcut3
+                        news.shortcut3,
+                        news.published_date
                         ))    // NewsDto의 url 필드에 매핑
                 .from(news)
                 .where(builder)                        // 동적 조건 적용

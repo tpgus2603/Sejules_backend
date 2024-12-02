@@ -8,6 +8,7 @@ import hello.goodnews.dto.UserProfileDTO;
 import hello.goodnews.repository.UserCategoryRepository;
 import hello.goodnews.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class UserService {
 
     private final UserRepository userRepository;
@@ -28,19 +30,12 @@ public class UserService {
     @Transactional
     public void updateUserProfile(User user, UserProfileDTO userProfileDTO) {
         // 1. 성별 업데이트
-        try {
-            Gender gender = Gender.valueOf(userProfileDTO.getGender().toUpperCase());
-            user.setGender(gender);
-        } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("유효하지 않은 성별 값입니다.");
-        }
-
+        log.info("e1!");
+        Gender gender = Gender.valueOf(userProfileDTO.getGender().toUpperCase());
+        user.setGender(gender);
         // 2. 관심 카테고리 검증 (정확히 4개 선택했는지)
         Set<CategoryType> selectedCategories = userProfileDTO.getCategories();
-        if (selectedCategories.size() != 4) {
-            throw new IllegalArgumentException("관심 카테고리는 정확히 4개 선택해야 합니다.");
-        }
-
+        log.info("e2!");
         // 3. 기존 사용자 카테고리 삭제
         userCategoryRepository.deleteAll(user.getUserCategories());
         user.getUserCategories().clear();
@@ -54,7 +49,7 @@ public class UserService {
             userCategoryRepository.save(userCategory);
             user.getUserCategories().add(userCategory);
         }
-
+        log.info("e3!");
         // 5. 사용자 엔티티 저장
         userRepository.save(user);
     }

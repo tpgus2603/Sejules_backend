@@ -11,5 +11,5 @@ import java.util.Optional;
 
 public interface NewsRepository extends JpaRepository<News, Long> ,NewsRepositoryCustom{
     Optional<News> findByUrl(String url);
-     Page<NewsDto> findByCategoryType(CategoryType categoryType, Pageable pageable);
+     Page<News> findByCategoryType(CategoryType categoryType, Pageable pageable);
 }
