@@ -54,12 +54,7 @@ public class AuthController {
 
                 // 프로필 완성 여부 확인
                 boolean isProfileComplete = userService.isUserProfileComplete(user);
-
-                String token = null;
-                if (isProfileComplete) {
-                    // JWT 생성
-                    token = jwtUtil.generateJwtToken(user.getEmail());
-                }
+                String token = jwtUtil.generateJwtToken(user.getEmail());
 
                 // 응답 DTO 생성
                 AuthResponse authResponse = new AuthResponse(isProfileComplete, token);
@@ -73,18 +68,10 @@ public class AuthController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("내부 서버 오류.");
         }
     }
-
-    /**
-     * 요청용 DTO 클래스
-     */
     @Data
     static class GoogleTokenRequest {
         private String idToken;
     }
-
-    /**
-     * 응답용 DTO 클래스
-     */
     @Data
     @AllArgsConstructor
     static class AuthResponse {

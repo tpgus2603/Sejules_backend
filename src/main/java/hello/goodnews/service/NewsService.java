@@ -22,6 +22,8 @@ public class NewsService {
                 .orElseThrow(() -> new RuntimeException("해당 뉴스가 존재하지 않습니다."));
         return new NewsContentDto(
                 news.getTitle(),
+                news.getPublisher(),
+                news.getReporter(),
                 news.getShortcut(),
                 news.getContent(),
                 news.getKeyword1(),
