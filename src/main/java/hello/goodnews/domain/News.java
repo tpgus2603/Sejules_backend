@@ -26,6 +26,10 @@ public class News {
     @Column(nullable = false)
     private String title;
 
+    @Column(nullable = false)
+    private String publisher;
+    @Column
+    private String reporter;
     @Lob
     @Column(nullable = false)
     private String content;

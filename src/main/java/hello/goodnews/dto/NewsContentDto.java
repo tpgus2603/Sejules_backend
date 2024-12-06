@@ -14,6 +14,8 @@ import java.time.LocalDateTime;
 @Builder
 public class NewsContentDto {
     private String title;
+    private String publisher;
+    private String reporter;
     private String shortcut;
     private String content;
     private String keyword1;
