@@ -27,8 +27,6 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserDetailsServiceImpl userDetailsService;
-    private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-    private final LoginService loginService;
     private final JwtUtil jwtUtil;
 
     @Bean
@@ -40,18 +38,11 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // 요청에 대한 권한 설정
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/api/auth/**", "/oauth2/**", "/h2-console/**").permitAll()
+                        .requestMatchers("/", "/api/auth/**", "/h2-console/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 // 헤더 설정 (H2 콘솔을 위한)
                 .headers(headers -> headers.frameOptions(frameOptions -> frameOptions.disable()))
-                // OAuth2 로그인 설정
-                .oauth2Login(oauth2 -> oauth2
-                        .successHandler(oAuth2AuthenticationSuccessHandler)
-                        .userInfoEndpoint(userInfo -> userInfo
-                                .userService(loginService)
-                        )
-                )
                 // JWT 인증 필터 추가
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

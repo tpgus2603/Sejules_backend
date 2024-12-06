@@ -12,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -52,6 +53,22 @@ public class UserService {
         log.info("e3!");
         // 5. 사용자 엔티티 저장
         userRepository.save(user);
+    }
+    public User processOAuthPostLogin(String email, String name) {
+        Optional<User> userOptional = userRepository.findByEmail(email);
+        User user;
+        if (userOptional.isPresent()) {
+            user = userOptional.get();
+            user.setName(name);
+            userRepository.save(user);
+        } else {
+            user = User.builder()
+                    .email(email)
+                    .name(name)
+                    .build();
+            userRepository.save(user);
+        }
+        return user;
     }
 
     /**
