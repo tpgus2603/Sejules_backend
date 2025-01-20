@@ -30,8 +30,8 @@ public class News {
     private String publisher;
     @Column
     private String reporter;
-    @Lob
-    @Column(nullable = false)
+
+    @Column(columnDefinition = "TEXT",nullable = false)
     private String content;
 
     @Column(nullable = false)
